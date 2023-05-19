@@ -16,7 +16,8 @@ class WeatherApiServices {
     final Uri uri = Uri(
       scheme: 'https',
       host: kHost,
-      path: '/api/location/search/',
+      path:
+          '/api.weatherapi.com/v1/current.json?key=8b51912ee82e4794a8e71437231805&q=$city&aqi=no',
       queryParameters: {'query': city},
     );
     try {
@@ -25,6 +26,7 @@ class WeatherApiServices {
         throw httpErrorHandler(response);
       }
       final responseBody = json.decode(response.body);
+      print(responseBody);
       if (responseBody.isEmpty) {
         throw WeatherException('Cannot get the woeid of the$city');
       }
