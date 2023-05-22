@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:weather/pages/search_page.dart';
 import 'package:weather/providers/weather_provider.dart';
+import 'package:weather/widgets/error_dialog.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -29,13 +30,7 @@ class _HomePageState extends State<HomePage> {
   void registerListener() {
     final WeatherState ws = context.read<WeatherProvider>().state;
     if (ws.status == WeatherStatus) {
-      showDialog(
-          context: context,
-          builder: (context) {
-            return AlertDialog(
-              content: Text(ws.error.errMsg),
-            );
-          });
+      errorDialog(context, ws.error.errMsg);
     }
   }
 
