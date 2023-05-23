@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:weather/consts/constants.dart';
 import 'package:weather/pages/search_page.dart';
+import 'package:weather/pages/settings_page.dart';
+import 'package:weather/providers/temp_settings_provider.dart';
 import 'package:weather/providers/weather_provider.dart';
 import 'package:weather/widgets/error_dialog.dart';
 
@@ -63,7 +65,15 @@ class _HomePageState extends State<HomePage> {
               Icons.search,
               color: Colors.white,
             ),
-          )
+          ),
+          IconButton(
+            onPressed: () {
+              Navigator.push(context, MaterialPageRoute(builder: (context) {
+                return const SettingsPage();
+              }));
+            },
+            icon: const Icon(Icons.settings, color: Colors.white),
+          ),
         ],
       ),
       body: showWeather(),
@@ -71,6 +81,10 @@ class _HomePageState extends State<HomePage> {
   }
 
   String showTemperature(double temperature) {
+    final tempUnit = context.watch<TempSettingsProvider>().state.tempUnit;
+    if (tempUnit == TempUnit.fahrenheit) {
+      return ((temperature * 9 / 5) * 32).toStringAsFixed(2) + '℉';
+    }
     return temperature.toStringAsFixed(1) + ' ℃';
   }
 
@@ -153,10 +167,10 @@ class _HomePageState extends State<HomePage> {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            showIcon(weatherState.weather.weatherStateAbbr),
+            // showIcon(weatherState.weather.weatherStateAbbr),
             Text(
               weatherState.weather.weatherStateName,
-              style: TextStyle(fontSize: 32),
+              style: const TextStyle(fontSize: 32),
             ),
           ],
         ),
